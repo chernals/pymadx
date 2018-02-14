@@ -10,8 +10,8 @@ import string as _string
 import tarfile
 import os.path
 
-from _General import GetSixTrackAperType as _GetSixTrackAperType
-from _General import Cast as _Cast
+from ._General import GetSixTrackAperType as _GetSixTrackAperType
+from ._General import Cast as _Cast
 
 class Tfs(object):
     """
@@ -94,11 +94,11 @@ class Tfs(object):
         the filename, the file will be opened still compressed.
         """
         if ('tar' in filename) or ('gz' in filename):
-            print 'pymadx.Tfs.Load> zipped file'
+            print('pymadx.Tfs.Load> zipped file')
             tar = tarfile.open(filename,'r')
             f = tar.extractfile(tar.firstmember)
         else:
-            print 'pymadx.Tfs.Load> normal file'
+            print('pymadx.Tfs.Load> normal file')
             f = open(filename)
 
         #first pass at file - need to check if it has 'NAME' column
@@ -112,8 +112,8 @@ class Tfs(object):
                 #name
                 self.columns.extend(sl[1:]) #miss "*" from column names line
                 if verbose:
-                    print 'Columns will be:'
-                    print self.columns
+                    print('Columns will be:')
+                    print(self.columns)
                 break
         if 'NAME' in self.columns:
             usename = True #use the name
@@ -569,7 +569,7 @@ class Tfs(object):
         try:
             d = self[elementname]
         except KeyError:
-            print 'No such item',elementname,' in this tfs file'
+            print('No such item',elementname,' in this tfs file')
             return None
         return [d[key] for key in self.columns]
 
@@ -613,7 +613,7 @@ class Tfs(object):
         particlular element in the sequence identified by name.
         """
         for i,parameter in enumerate(self.columns):
-            print parameter.ljust(10,'.'),self.data[itemname][i]
+            print(parameter.ljust(10,'.'),self.data[itemname][i])
 
     def GetElementNamesOfType(self,typename):
         """
@@ -695,8 +695,8 @@ class Tfs(object):
         Print out all the population of each type of
         element in the beam line (sequence)
         """
-        print 'Filename >',self.filename
-        print 'Total number of items >',self.nitems
+        print('Filename >',self.filename)
+        print('Total number of items >',self.nitems)
         if 'KEYWORD' in self.columns:
             i = self.ColumnIndex('KEYWORD')
         elif 'APERTYPE' in self.columns:
@@ -706,9 +706,9 @@ class Tfs(object):
 
         keys = set([self.data[name][i] for name in self.sequence])
         populations = [(len(self.GetElementsOfType(key)),key) for key in keys]
-        print 'Type'.ljust(15,'.'),'Population'
+        print('Type'.ljust(15,'.'),'Population')
         for item in sorted(populations)[::-1]:
-            print item[1].ljust(15,'.'),item[0]
+            print(item[1].ljust(15,'.'),item[0])
 
     def Plot(self, title='', outputfilename=None, machine=True, dispersion=False, squareroot=True):
         """
@@ -723,7 +723,7 @@ class Tfs(object):
             _Plot.PlotBeta(self, title, outputfilename, machine,
                            dispersion, squareroot)
         except ImportError:
-            print "No beta plotting available due to missing dependencies!"
+            print("No beta plotting available due to missing dependencies!")
 
 
     def PlotCentroids(self, title='', outputfilename=None, machine=True):
@@ -737,7 +737,7 @@ class Tfs(object):
                     (self.filename.split("."))[0])
             _Plot.PlotCentroids(self,title,outputfilename,machine)
         except ImportError:
-            print "No centroid plotting available due to missing dependencies!"
+            print("No centroid plotting available due to missing dependencies!")
 
 
     def IndexFromGmadName(self, gmadname, verbose=False):
@@ -761,7 +761,7 @@ class Tfs(object):
         if verbose:
             for index in indices:
                 sPos = self.data[self.NameFromIndex(index)][self.ColumnIndex('S')]
-                print " matches at S =", sPos, "@index", index
+                print(" matches at S =", sPos, "@index", index)
         if len(indices) == 1:
             return indices[0]
         elif len(indices) > 1:
@@ -920,10 +920,10 @@ class Tfs(object):
 
         if terse == False:
             if perturbingParameters:
-                print "--Element: " + componentName + " @ index " + str(componentIndex) + " parameters:"
+                print("--Element: " + componentName + " @ index " + str(componentIndex) + " parameters:")
                 for variable in perturbingParameters:
-                    print variable + "= ", component[variable]
-                    print "Length = ", component['L']
+                    print(variable + "= ", component[variable])
+                    print("Length = ", component['L'])
 
         if (not perturbingParameters):
             return False
@@ -1173,7 +1173,7 @@ class Aperture(Tfs):
         for t in ts:
             if t not in _madxAperTypes:
                 failed = True
-                print 'Warning: Aperture type \"',t,'\" is not a valid MADX aperture type.'
+                print('Warning: Aperture type \"',t,'\" is not a valid MADX aperture type.')
 
         if failed:
             PrintMADXApertureTypes()
@@ -1223,7 +1223,7 @@ class Aperture(Tfs):
         any of the aperture values are below value. The default is
         the tolerance as defined by SetZeroTolerance().
         """
-        print 'Aperture> removing any aperture entries below',limits
+        print('Aperture> removing any aperture entries below',limits)
         if keys == 'all':
             aperkeystocheck = ['APER_%s' %n for n in range(1,5)] #prepare #APER_1, APER_2 etc
         elif type(keys) in (float, int, str):
@@ -1239,7 +1239,7 @@ class Aperture(Tfs):
             if key in self.columns:
                 aperkeys.append(key)
             else:
-                print key,' will be ignored as not in this aperture Tfs file'
+                print(key,' will be ignored as not in this aperture Tfs file')
 
         # 'quiet' stops it complaining about not finding metadata
         a = Aperture(debug=self.debug, quiet=True)
@@ -1255,7 +1255,7 @@ class Aperture(Tfs):
         return a
 
     def RemoveAboveValue(self, limits=8, keys='all'):
-        print 'Aperture> removing any aperture entries above',limits
+        print('Aperture> removing any aperture entries above',limits)
         if keys == 'all':
             aperkeystocheck = ['APER_%s' %n for n in [1,2,3,4]]
         elif type(keys) in (float, int, str):
@@ -1272,7 +1272,7 @@ class Aperture(Tfs):
             if key in self.columns:
                 aperkeys.append(key)
             else:
-                print key,' will be ignored as not in this aperture Tfs file'
+                print(key,' will be ignored as not in this aperture Tfs file')
 
         if len(aperkeys) == 0:
             print('No aperture values to check')
@@ -1299,7 +1299,7 @@ class Aperture(Tfs):
         Takes the first aperture value for entries with degenerate S positions and
         removes the others.
         """
-        print 'Aperture> removing entries with duplicate S positions'
+        print('Aperture> removing entries with duplicate S positions')
         # check if required at all
         if len(self) == len(self._ssorted):
             # no duplicates!
@@ -1381,13 +1381,13 @@ class Aperture(Tfs):
         return x,y
 
     def ReplaceType(self, existingType, replacementType):
-        print 'Aperture> replacing',existingType,'with',replacementType
+        print('Aperture> replacing',existingType,'with',replacementType)
         et = existingType    #shortcut
         rt = replacementType #shortcut
         try:
             index = self.columns.index('APERTYPE')
         except ValueError:
-            print 'No apertype column, therefore no type to replace'
+            print('No apertype column, therefore no type to replace')
             return
         for item in self:
             try:
@@ -1431,12 +1431,12 @@ class Aperture(Tfs):
         shouldSplit = _np.array([bdA1, bdA2, bdA3, bdA4]).any()
 
         if self.debug:
-            print 'length: ',l,', S (start): ',sStart,', S (end): ',sEnd
-            print 'Index (start): ',indexStart,', Index(end): ',indexEnd
-            print 'Any difference in aper1: ',bdA1
-            print 'Any difference in aper2: ',bdA2
-            print 'Any difference in aper3: ',bdA3
-            print 'Any difference in aper4: ',bdA4
+            print('length: ',l,', S (start): ',sStart,', S (end): ',sEnd)
+            print('Index (start): ',indexStart,', Index(end): ',indexEnd)
+            print('Any difference in aper1: ',bdA1)
+            print('Any difference in aper2: ',bdA2)
+            print('Any difference in aper3: ',bdA3)
+            print('Any difference in aper4: ',bdA4)
 
         if not shouldSplit:
             # return false and the aperture model to be use for the whole item
@@ -1444,7 +1444,7 @@ class Aperture(Tfs):
             return False, [l], [self.GetApertureAtS(sMid)]
         else:
             if self.debug:
-                print 'Recommend splitting element'
+                print('Recommend splitting element')
             # should split!
             # work out s locations at split points
 
@@ -1456,7 +1456,7 @@ class Aperture(Tfs):
             indices = _np.array(list(set(bdA.nonzero()[1])))
             indices += indexStart # add on offset to get index for whole data
             if self.debug:
-                print indices
+                print(indices)
             sSplits = _np.array([self._ssorted[x] for x in indices]) # s positions of aperture changes
             if len(sSplits) > 1:
                 while sSplits[0] < sStart:
@@ -1471,7 +1471,7 @@ class Aperture(Tfs):
             lSplits     = lSplits[lSplits > 0]
 
             if self.debug:
-                print 'Aperture> length of splits: ',lSplits
+                print('Aperture> length of splits: ',lSplits)
 
             # lSplits is just the length of the proposed split points from the start
             # make them a local S within the element by prepending 0 and appending L(ength)
@@ -1481,7 +1481,7 @@ class Aperture(Tfs):
             lSplits = _np.diff(lSplits)
 
             if self.debug:
-                print 'Aperture> length of splits after checks: ',lSplits
+                print('Aperture> length of splits after checks: ',lSplits)
 
             # paranoid checks - trim / adjust last element to conserve length accurately
             if lSplits.sum() != l:
@@ -1514,9 +1514,9 @@ def CheckItsTfsAperture(tfsfile):
     return aper
 
 def PrintMADXApertureTypes():
-    print 'Valid MADX aperture types are:'
+    print('Valid MADX aperture types are:')
     for t in _madxAperTypes:
-        print t
+        print(t)
 
 def GetApertureExtents(aperture):
     """

@@ -2,8 +2,8 @@
 Analysis utilities for PTC data.
 """
 
-import Ptc as _Ptc 
-from  pymadx.Data import Tfs as _Tfs
+from . import Ptc as _Ptc
+from .Data import Tfs as _Tfs
 import numpy as _np
 import csv
 import time
@@ -42,7 +42,7 @@ class PtcAnalysis(object):
             pxrms = samplerData.GetColumn('PX').std()
             pyrms = samplerData.GetColumn('PY').std()
 
-            print isampler, xrms, pxrms, yrms, pyrms
+            print(isampler, xrms, pxrms, yrms, pyrms)
 
     def CalculateOpticalFunctions(self, output):
         """
@@ -86,7 +86,7 @@ class PtcAnalysis(object):
         for isampler in range(0,self.ptcOutput.isegment,1):
             #samplerData = self.ptcOutput.GetSegment(segment)
             samplerData = self.ptcOutput.GetSegment(isampler)
-            print 'segment:', (isampler+1) ,'/', self.ptcOutput.isegment
+            print('segment:', (isampler+1) ,'/', self.ptcOutput.isegment)
         
             x  = samplerData.GetColumn('X')
             y  = samplerData.GetColumn('Y') 

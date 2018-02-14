@@ -57,7 +57,7 @@ def IndexOfElement(tfsinstance,markername):
         i = names.index(markername)
     except ValueError:
         i = 0
-        print 'Unknown element name'
+        print('Unknown element name')
     return i
 
 def GetSixTrackAperType(aper1,aper2,aper3,aper4):

@@ -6,7 +6,7 @@ See individual methods for documentation
 """
 
 try:
-    from _Transport2Madx import Transport2Madx
+    from ._Transport2Madx import Transport2Madx
 except ImportError:
     import warnings
     _msg = ("Missing pytransport dependency.  TRANSPORT conversion"
@@ -14,5 +14,5 @@ except ImportError:
     warnings.warn(_msg)
     del warnings
 
-from _Mad8ToMadx import Mad8ToMadx
-from _TfsToPtc import TfsToPtc
+from ._Mad8ToMadx import Mad8ToMadx
+from ._TfsToPtc import TfsToPtc

@@ -13,8 +13,8 @@ try:
     import matplotlib.pyplot  as _plt
 except ImportError:
     useMPL = False
-    print "pymadx.Plot -> WARNING - plotting will not work!"
-    print "matplotlib.pyplot doesn't exist"
+    print("pymadx.Plot -> WARNING - plotting will not work!")
+    print("matplotlib.pyplot doesn't exist")
 
 class _My_Axes(_matplotlib.axes.Axes):
     """
@@ -243,7 +243,7 @@ def _ApertypeToColor(apertype, cmap=_ApertypeColorMap()):
     try:
         color = cmap[apertype.upper()]
     except:
-        print "Warning, unrecognised apertype: "+apertype+". Default to white color."
+        print("Warning, unrecognised apertype: "+apertype+". Default to white color.")
         color =(1,1,1)
 
     return color
@@ -308,8 +308,8 @@ def AddMachineLatticeToFigure(figure, tfsfile, tightLayout=True):
     requiredKeys = ['KEYWORD', 'S', 'L', 'K1L']
     okToProceed = all([key in tfs.columns for key in requiredKeys])
     if not okToProceed:
-        print "The required columns aren't present in this tfs file"
-        print "The required columns are: ", requiredKeys
+        print("The required columns aren't present in this tfs file")
+        print("The required columns are: ", requiredKeys)
         raise IOError
 
     axs = figure.get_axes() # get the existing graph
@@ -327,7 +327,7 @@ def AddMachineLatticeToFigure(figure, tfsfile, tightLayout=True):
 
     def Click(a) :
         if a.button == 3 :
-            print 'Closest element: ',tfs.NameFromNearestS(a.xdata)
+            print('Closest element: ',tfs.NameFromNearestS(a.xdata))
 
     MachineXlim(axmachine)
     axmachine.callbacks.connect('xlim_changed', MachineXlim)

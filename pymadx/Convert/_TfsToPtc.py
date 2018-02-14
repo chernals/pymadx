@@ -1,10 +1,11 @@
-import pymadx.Beam as _Beam
-import pymadx.Builder as _Builder
+from .. import Beam as _Beam
+from .. import Builder as _Builder
 import numpy as _np
 import re as _re
 import csv
 
-import pymadx.Data as _Data
+from .. import Data as _Data
+from .. import Data as _Data
 
 def TfsToPtc(inputfile,outputfilename, ptcfile, startname=None,
              stopname=None,ignorezerolengthitems=True,samplers='all',
@@ -44,7 +45,7 @@ def TfsToPtc(inputfile,outputfilename, ptcfile, startname=None,
     else:
         stopindex  = madx.IndexFromName(stopname)
     if stopindex <= startindex:
-        print 'stopindex <= startindex'
+        print('stopindex <= startindex')
         stopindex = startindex + 1
 
     try:
@@ -80,10 +81,10 @@ def TfsToPtc(inputfile,outputfilename, ptcfile, startname=None,
         hgapindex       = madx.ColumnIndex('HGAP')
 
     except ValueError:
-        print 'Missing columns from tfs file - insufficient information to convert file'
-        print 'Required columns : L, ANGLE, KSI, K1L...K6L, K1SL...K6SL, TILT, KEYWORD, ALFX, ALFY, BETX, BETY, VKICK, HKICK'
-        print 'Given columns    : '
-        print madx.columns
+        print('Missing columns from tfs file - insufficient information to convert file')
+        print('Required columns : L, ANGLE, KSI, K1L...K6L, K1SL...K6SL, TILT, KEYWORD, ALFX, ALFY, BETX, BETY, VKICK, HKICK')
+        print('Given columns    : ')
+        print(madx.columns)
 
         
     # iterate through input file and construct machine
@@ -174,7 +175,7 @@ def TfsToPtc(inputfile,outputfilename, ptcfile, startname=None,
             a.AddMultipole(rname, knl=(kn0l, kn1l, kn2l, kn3l, kn4l, kn5l, kn6l), ksl=(kn0sl, kn1sl, kn2sl, kn3sl, kn4sl, kn5sl, kn6sl),**kws)
 
         else:
-            print 'MadxTfs2Ptc> unknown element type: ',t,' for element named: ',name
+            print('MadxTfs2Ptc> unknown element type: ',t,' for element named: ',name)
             if not zerolength:
                 print('MadxTfs2Ptc> replacing with drift')
                 a.AddDrift(rname,l)
